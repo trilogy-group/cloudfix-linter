@@ -7,9 +7,11 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
+    "cloudfix-linter/logger"
 	tfjson "github.com/hashicorp/terraform-json"
 )
+
+var log=logger.NewLogger()
 
 type Parameter struct {
 	IdealType      string `json:"Migrating to instance type"`
