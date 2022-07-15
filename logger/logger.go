@@ -1,8 +1,7 @@
 package logger
 
 import (
-	"fmt"
-
+	"log"
 	"github.com/google/uuid"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -10,21 +9,15 @@ import (
 
 var Log *logrus.Logger
 
-func NewLogger() *logrus.Logger {
+func NewLogger(filePath string) *logrus.Logger {
 	if Log != nil {
 		return Log
 	}
-	var flag string
-	var filePath string
-	fmt.Println("Enter Path to log debug files: (Y/N)")
-	fmt.Scan(&flag)
-	if flag == "N" {
+	if filePath == "" {
 		id := uuid.New().String()
 		filePath = "debug/Track-" + id + ".log"
 		fileName := "Track-" + id + ".log"
-		fmt.Printf("New File \"%s\" created in debug folder\n", fileName)
-	} else {
-		fmt.Scan(&filePath)
+		log.Printf("New File \"%s\" created in debug folder\n", fileName)
 	}
 	pathMap := lfshook.PathMap{
 		logrus.InfoLevel:  filePath,

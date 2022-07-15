@@ -8,10 +8,22 @@ import (
 	"os/exec"
 	"strings"
     "cloudfix-linter/logger"
+	"github.com/sirupsen/logrus"
 	tfjson "github.com/hashicorp/terraform-json"
 )
 
-var log=logger.NewLogger()
+var Log *logrus.Logger
+
+func initializeLogger(){
+	var flag string
+	var filePath string
+	fmt.Println("Enter Path to log debug files: (Y/N)")
+	fmt.Scan(&flag)
+	if flag == "Y"{
+		fmt.Scan(&filePath)
+	}
+	Log = logger.NewLogger(filePath)
+}
 
 type Parameter struct {
 	IdealType      string `json:"Migrating to instance type"`
@@ -161,7 +173,11 @@ func (o *Orchestrator) addPairToTagMap(resource *tfjson.StateResource, tagToID m
 }
 
 func main() {
+    initializeLogger()
+	Log.Info("Hello Info")
+	Log.Warn("Hello Warn")
 
+	Log.WithField("int", 123).WithField("string", "haha").Error("Hello Error")
 	var orches Orchestrator
 	var persist Persistance
 	reccosFileName := "recos.txt"
