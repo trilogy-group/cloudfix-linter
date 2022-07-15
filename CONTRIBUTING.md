@@ -25,6 +25,8 @@ Thank you for showing interest in contriburing to cloudfix-linter. Everyone from
 
 The project uses a custom ruleset written for [TfLint](https://github.com/terraform-linters/tflint/blob/master/docs/developer-guide/architecture.md) to flag off reccomendations from cloudfix. The github repo for the ruleset can be accessed [here] (https://github.com/trilogy-group/tflint-ruleset-template)
 
+If you find any bugs with the product, please open and issue. Within the issue, describe the bug with exact steps on how to reproduce it. The team would be happy to look into it. If you wish to contribute to the product, the team is willing to review PRs.
+
 Building the product:
 
 1. Terraform installation. Commands:
