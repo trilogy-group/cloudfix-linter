@@ -19,6 +19,9 @@ func initializeLogger(){
 	var filePath string
 	fmt.Println("Enter Path to log debug files: (Y/N)")
 	fmt.Scan(&flag)
+	if flag !="Y" && flag !="N"{
+		panic("Enter either of Y or N only")
+	}
 	if flag == "Y"{
 		fmt.Scan(&filePath)
 	}
@@ -62,16 +65,14 @@ type Orchestrator struct {
 // Memeber functions for the Orchestrator class follow:
 
 func (o *Orchestrator) parseReccos(reccos []byte) map[string]map[string]string {
-	//appLogger := logger.New()
 	mapping := map[string]map[string]string{}
 	var responses []ResponseReccos
 	err := json.Unmarshal(reccos, &responses)
 	if err != nil {
-		//appLogger.Error().Println("Failed to unmarshall reccomendations")
+		Log.Error("Failed to unmarshall reccomendations")
 		panic(err)
 	}
-	//appLogger.Info().Println("Reccomendations unamrshalled succesfully!")
-	//fmt.Println(oppurMap["Ec2IntelToAmd"])
+	Log.Info("Reccomendations unmarrshalled succesfully!")
 	for _, recco := range responses {
 		awsID := recco.ResourceId
 		oppurType := recco.OpportunityType
@@ -85,17 +86,15 @@ func (o *Orchestrator) parseReccos(reccos []byte) map[string]map[string]string {
 			temp["instance_type"] = idealType
 			mapping[awsID] = temp
 		default:
-			//appLogger.Warning().Printf("Unknown Oppurtunity Type for resource ID: \"%s\"", awsID)
+			Log.Warnf("Unknown Oppurtunity Type for resource ID: \"%s\"\n", awsID)
 			temp["NoAttributeMarker"] = recco.OpportunityDescription
 			mapping[awsID] = temp
 		}
 	}
-	//appLogger.Info().Println("Reccomendation mapping made!")
 	return mapping
 }
 
 func (o *Orchestrator) extractModulePaths(jsonString []byte) ([]string, error) {
-	//appLogger := logger.New()
 	var modulePaths []string
 	//byteValue := []byte(jsonString)
 	/*
@@ -105,16 +104,14 @@ func (o *Orchestrator) extractModulePaths(jsonString []byte) ([]string, error) {
 	var result map[string][]map[string]interface{}
 	err := json.Unmarshal(jsonString, &result)
 	if err != nil {
-		//appLogger.Error().Println("Failed to unmarshall module paths from json string")
+		Log.Error("Failed to unmarshall module paths from json string")
 		return modulePaths, err
 	}
-	//appLogger.Info().Println("Unmarshalled module paths succesfully!")
 	noOfModules := len(result["issues"])
 	modulePaths = make([]string, noOfModules)
 	for key, element := range result["issues"] {
 		modulePaths[key] = fmt.Sprint(element["message"])
 	}
-	//appLogger.Info().Println("Extracted module paths succesfully!")
 	return modulePaths, nil
 }
 
@@ -122,11 +119,13 @@ func (o *Orchestrator) getTagToID() (map[string]string, error) {
 	tagToID := make(map[string]string)
 	TfLintOutData, errT := exec.Command("terraform", "show", "-json").Output()
 	if errT != nil {
+		Log.Error("Failed to execute terraform show")
 		return tagToID, errT
 	}
 	var tfState tfjson.State
 	errU := tfState.UnmarshalJSON(TfLintOutData)
 	if errU != nil {
+		Log.Error("Failed to unmarshall byte array extracted from terraform show")
 		return tagToID, errU
 	}
 	//for root module resources
@@ -146,19 +145,19 @@ func (o *Orchestrator) getTagToID() (map[string]string, error) {
 func (o *Orchestrator) addPairToTagMap(resource *tfjson.StateResource, tagToID map[string]string) {
 	AWSResourceIDRaw, ok := resource.AttributeValues["id"]
 	if !ok {
-		//log that id is not present
+		Log.Warn("ID not present")
 		return
 	}
 	AWSResourceID := AWSResourceIDRaw.(string)
 	tagsRaw, ok := resource.AttributeValues["tags"]
 	if !ok {
-		//log that tags are not present
+		Log.Warn("tags are not present")
 		return
 	}
 	tags := tagsRaw.(map[string]interface{})
 	yorTagRaw, ok := tags["yor_trace"]
 	if !ok {
-		//log that yor_trace is not present
+		Log.Warn("yor_trace not present")
 		return
 	}
 	yorTag := yorTagRaw.(string)
@@ -183,35 +182,44 @@ func main() {
 	currPWDStrip += "/reccos.json"
 	fileR, errR := ioutil.ReadFile(currPWDStrip)
 	if errR != nil {
-		//Add Error Log
+		Log.Error("Reading from reccos.json failed!")
 		panic(errR)
 	}
+	Log.Info("Reading from reccos.json Successful!")
 	reccosMapping := orches.parseReccos(fileR)
 	errP := persist.store_reccos(reccosMapping, reccosFileName)
 	if errP != nil {
+		Log.Error("Storing reccos mapping to persistance manager failed!")
 		panic(errP)
 	}
+	Log.Info("Storing reccos mapping to persistance manager Successful!")
 	os.Setenv("ReccosMapFile", reccosFileName)
 	tagFileName := "tagsID.txt"
 	tagToIDMap, errG := orches.getTagToID()
 	if errG != nil {
+		Log.Error("Storing reccos mapping to persistance manager failed!")
 		panic(errG)
 	}
+	Log.Info("Storing tag to ID mapping to persistance manager Successful!")
 	errT := persist.store_tagMap(tagToIDMap, tagFileName)
 	if errT != nil {
+		Log.Error("Storing tag to ID mapping to persistance manager failed!")
 		panic(errT)
 	}
+	Log.Info("Storing tag to ID mapping to persistance manager Successful!")
 	os.Setenv("TagsMapFile", tagFileName)
 	modulesJson, _ := exec.Command("tflint", "--only=module_source", "-f=json").Output()
 	modulePaths, errM := orches.extractModulePaths(modulesJson)
 	if errM != nil {
-		//log failure in extracting module paths
+		Log.Error("Extracting module paths from modules json failed!")
 		return
 	}
+	Log.Info("Extracting module paths from modules json Successful!")
 	output, _ := exec.Command("tflint", "--module", "--disable-rule=module_source").Output()
 	fmt.Print(string(output))
 	for _, module := range modulePaths {
 		outputM, _ := exec.Command("tflint", module, "--module", "--disable-rule=module_source").Output()
 		fmt.Print(string(outputM))
 	}
+	Log.Info("Recommendations display Successful!")
 }

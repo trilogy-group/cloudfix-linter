@@ -13,11 +13,13 @@ func NewLogger(filePath string) *logrus.Logger {
 	if Log != nil {
 		return Log
 	}
+	flag:=false
+	fileName:=""
 	if filePath == "" {
+		flag=true
 		id := uuid.New().String()
 		filePath = "debug/Track-" + id + ".log"
-		fileName := "Track-" + id + ".log"
-		log.Printf("New File \"%s\" created in debug folder\n", fileName)
+		fileName = "Track-" + id + ".log"
 	}
 	pathMap := lfshook.PathMap{
 		logrus.InfoLevel:  filePath,
@@ -35,5 +37,9 @@ func NewLogger(filePath string) *logrus.Logger {
 		pathMap,
 		&logrus.JSONFormatter{},
 	))
+    Log.Info("Started Execution")
+	if flag == true {
+    	log.Printf("New File \"%s\" created in debug folder\n", fileName)
+	}
 	return Log
 }
