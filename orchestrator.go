@@ -174,10 +174,6 @@ func (o *Orchestrator) addPairToTagMap(resource *tfjson.StateResource, tagToID m
 
 func main() {
     initializeLogger()
-	Log.Info("Hello Info")
-	Log.Warn("Hello Warn")
-
-	Log.WithField("int", 123).WithField("string", "haha").Error("Hello Error")
 	var orches Orchestrator
 	var persist Persistance
 	reccosFileName := "recos.txt"
