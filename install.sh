@@ -7,8 +7,7 @@ sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.rel
 sudo apt update
 sudo apt install terraform
 
-#Installing zip/unzip to unzip tflint and other commands ahead
-sudo apt install zip
+#downloading unzip to unzip tflint 
 sudo apt install unzip
 
 #Installing yor_trace 
@@ -31,4 +30,13 @@ tflint --init
 
 #Checking if terraform is installed
 terraform 
+
+#downloading tool binary for amd64 architecture
+wget https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/cloudfix-linter_linux_amd64
+
+#moving it to user local bin to make cloudfixlinter a command
+mv cloudfix-linter_linux_amd64 cloudfixlinter
+sudo mv cloudfixlinter  /usr/local/bin/
+sudo chown root:root /usr/local/bin/cloudfixlinter
+sudo chmod 755 /usr/local/bin/cloudfixlinter
 
