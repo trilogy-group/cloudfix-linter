@@ -16,10 +16,11 @@ func (t *TerraformManager) getTagToID(TfLintOutData []byte) (map[string]string, 
 	var tfState tfjson.State
 	errU := tfState.UnmarshalJSON(TfLintOutData)
 	if errU != nil {
+		Log.Error("Failed to unmarshal data from tflint")
 		return tagToID, errU
 	}
 	if tfState.Values == nil {
-		//log that no resources have been deployed
+		Log.Warn("No responses have been deployed")
 		return tagToID, nil
 	}
 	//for root module resources
@@ -42,19 +43,19 @@ func (t *TerraformManager) getTagToID(TfLintOutData []byte) (map[string]string, 
 func (t *TerraformManager) addPairToTagMap(resource *tfjson.StateResource, tagToID map[string]string) {
 	AWSResourceIDRaw, ok := resource.AttributeValues["id"]
 	if !ok {
-		//log that id is not present
+		Log.Warn("ID not present")
 		return
 	}
 	AWSResourceID := AWSResourceIDRaw.(string)
 	tagsRaw, ok := resource.AttributeValues["tags"]
 	if !ok {
-		//log that tags are not present
+		Log.Warn("Tags not present")
 		return
 	}
 	tags := tagsRaw.(map[string]interface{})
 	yorTagRaw, ok := tags["yor_trace"]
 	if !ok {
-		//log that yor_trace is not present
+		Log.Warn("yor_trace is not present")
 		return
 	}
 	yorTag := yorTagRaw.(string)
@@ -72,12 +73,12 @@ func (t *TerraformManager) getTagToIDMapping() (map[string]string, error) {
 	tagToID := make(map[string]string)
 	TfLintOutData, errT := exec.Command("terraform", "show", "-json").Output()
 	if errT != nil {
-		//Add Log
+		Log.Error("Failed to execute terraform show")
 		return tagToID, errT
 	}
 	tagToID, err := t.getTagToID(TfLintOutData)
 	if err != nil {
-		//Add Log
+		Log.Error("Getting tag to ID mapping failed")
 		return tagToID, err
 	}
 	return tagToID, nil

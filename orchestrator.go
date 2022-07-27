@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Orchestrator struct {
@@ -14,7 +16,6 @@ type Orchestrator struct {
 // Memeber functions for the Orchestrator class follow:
 
 func (o *Orchestrator) extractModulePaths(jsonString []byte) ([]string, error) {
-	//appLogger := logger.New()
 	var modulePaths []string
 	//byteValue := []byte(jsonString)
 	/*
@@ -23,21 +24,21 @@ func (o *Orchestrator) extractModulePaths(jsonString []byte) ([]string, error) {
 	*/
 	var result map[string][]map[string]interface{}
 	if len(jsonString) == 0 {
-		//Empty string has been sent. No modules present
+		Log.Warn("Empty Json string has been sent. No modules present")
 		return modulePaths, nil
 	}
 	err := json.Unmarshal(jsonString, &result)
 	if err != nil {
-		//appLogger.Error().Println("Failed to unmarshall module paths from json string")
+		Log.Error("Failed to unmarshall module paths from json string")
 		return modulePaths, err
 	}
-	//appLogger.Info().Println("Unmarshalled module paths succesfully!")
+	Log.Info("Unmarshalled module paths succesfully!")
 	noOfModules := len(result["issues"])
 	modulePaths = make([]string, noOfModules)
 	for key, element := range result["issues"] {
 		modulePaths[key] = fmt.Sprint(element["message"])
 	}
-	//appLogger.Info().Println("Extracted module paths succesfully!")
+	Log.Info("Extracted module paths succesfully!")
 	return modulePaths, nil
 }
 
@@ -49,28 +50,40 @@ func (o *Orchestrator) runReccos() {
 	reccosFileName := "recos.txt"
 	reccosMapping := cloudfixMan.parseReccos()
 	if len(reccosMapping) == 0 {
-		//log that no reccomendations could be received
+		Log.Warn("No recommendations could be received")
 		//exit gracefully
 	}
 	errP := persist.store_reccos(reccosMapping, reccosFileName)
 	if errP != nil {
+		Log.WithFields(logrus.Fields{
+			"Error": errP,
+		}).Error("Storing Reccos to persistance failed!")
 		panic(errP)
 	}
 	os.Setenv("ReccosMapFile", reccosFileName)
 	tagFileName := "tagsID.txt"
 	tagToIDMap, errG := terraMan.getTagToIDMapping()
 	if errG != nil {
+		Log.WithFields(logrus.Fields{
+			"Error": errG,
+		}).Error("Failed to create tag to ID mapping")
 		panic(errG)
 	}
 	errT := persist.store_tagMap(tagToIDMap, tagFileName)
 	if errT != nil {
+		Log.WithFields(logrus.Fields{
+			"Error": errT,
+		}).Error("Storing Tag Id map to persistance failed!")
 		panic(errT)
 	}
 	os.Setenv("TagsMapFile", tagFileName)
 	modulesJson, _ := exec.Command("tflint", "--only=module_source", "-f=json").Output()
 	modulePaths, errM := o.extractModulePaths(modulesJson)
+
 	if errM != nil {
-		//log failure in extracting module paths
+		Log.WithFields(logrus.Fields{
+			"Error": errM,
+		}).Error("Failed to extract module paths from Json output")
 		return
 	}
 	output, _ := exec.Command("tflint", "--module", "--disable-rule=module_source").Output()
@@ -79,4 +92,5 @@ func (o *Orchestrator) runReccos() {
 		outputM, _ := exec.Command("tflint", module, "--module", "--disable-rule=module_source").Output()
 		fmt.Print(string(outputM))
 	}
+	Log.Info("Orchestrator run successful!")
 }

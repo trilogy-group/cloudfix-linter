@@ -47,18 +47,18 @@ func (c *CloudfixManager) createMap(reccos []byte, attrMapping []byte) map[strin
 	mapping := map[string]map[string]string{} //this is the map that has to be returned in the end
 	var responses []ResponseReccos
 	if len(reccos) == 0 {
-		//log that no reccomendations have been received
+		Log.Warn("No reccommendations has been received")
 		return mapping
 	}
 	errU := json.Unmarshal(reccos, &responses) //the reccomendations from cloudfix are being unmarshalled
 	if errU != nil {
-		// add log
+		Log.Error("Failed to unmarshall recommendations from cloudfix")
 		return mapping
 	}
 	var attrMap map[string]IdealAttributes
 	errM := json.Unmarshal(attrMapping, &attrMap) //the mapping that defines how to parse an oppurtunity type is being unmarshalled here
 	if errM != nil {
-		//add log
+		Log.Error("Failed to unmarshall attribute mapping")
 		return mapping
 	}
 	for _, recco := range responses { //iterating through the recommendations one by one
@@ -73,7 +73,7 @@ func (c *CloudfixManager) createMap(reccos []byte, attrMapping []byte) map[strin
 				//the ideal value needs to be picked up from cloudfix reccomendations
 				valueFromReccos, ok := recco.Parameters[atrValueByPeriod[1]]
 				if !ok {
-					//log that attribute is not present
+					Log.Warn("Attribute is not present")
 					//if the code reaches here, then this means that the strategy for parsing has not been made correctly.
 					// So we are resorting to showing the reccomendation against the resource name with the description for the oppurtunity
 					attributeTypeToValue["NoAttributeMarker"] = recco.OpportunityDescription
@@ -92,6 +92,7 @@ func (c *CloudfixManager) createMap(reccos []byte, attrMapping []byte) map[strin
 		}
 		mapping[awsID] = attributeTypeToValue
 	}
+	Log.Info("Tag to ID map created successfully!")
 	return mapping
 }
 
@@ -106,7 +107,7 @@ func (c *CloudfixManager) parseReccos() map[string]map[string]string {
 	currPWDStrip += "/reccos.json"
 	reccos, errR := ioutil.ReadFile(currPWDStrip)
 	if errR != nil {
-		//Add Error Log
+		Log.Error("Failed to read reccos json file")
 		panic(errR)
 	}
 	attrMapping := []byte(`{
@@ -128,5 +129,6 @@ func (c *CloudfixManager) parseReccos() map[string]map[string]string {
 		}
 	}`)
 	mapping := c.createMap(reccos, attrMapping)
+	Log.Info("Recommendations Parsed successfully!")
 	return mapping
 }

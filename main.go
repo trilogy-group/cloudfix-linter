@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"os/exec"
-    "fmt"
-	"github.com/spf13/cobra"
+
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 	"github.com/trilogy-group/cloudfix-linter/logger"
 )
 
@@ -23,6 +24,7 @@ func initializeLogger() {
 	}
 	Log = logger.NewLogger(filePath)
 }
+
 // rootCmd represents the base command when called without any subcommands
 var (
 	rootCmd = &cobra.Command{
