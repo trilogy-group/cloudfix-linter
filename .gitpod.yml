@@ -27,7 +27,7 @@ tasks:
      echo "}" >> .tflint.hcl
      tflint --init
 
-  - init: go get && go build ./... && go test ./...
+  - init: go build
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
