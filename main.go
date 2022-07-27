@@ -2,10 +2,27 @@ package main
 
 import (
 	"os/exec"
-
+    "fmt"
 	"github.com/spf13/cobra"
+	"github.com/sirupsen/logrus"
+	"github.com/trilogy-group/cloudfix-linter/logger"
 )
 
+var Log *logrus.Logger
+
+func initializeLogger() {
+	var flag string
+	var filePath string
+	fmt.Println("Enter Path to log debug files: (Y/N)")
+	fmt.Scan(&flag)
+	if flag != "Y" && flag != "N" {
+		panic("Enter either of Y or N only")
+	}
+	if flag == "Y" {
+		fmt.Scan(&filePath)
+	}
+	Log = logger.NewLogger(filePath)
+}
 // rootCmd represents the base command when called without any subcommands
 var (
 	rootCmd = &cobra.Command{
@@ -42,6 +59,7 @@ func init() {
 }
 
 func main() {
+	initializeLogger()
 	if err := rootCmd.Execute(); err != nil {
 		panic(err)
 	}
