@@ -19,15 +19,6 @@ tasks:
         brew install bridgecrewio/tap/yor
 
   - init: curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-    command: |
-     echo "plugin \"template\"{" > .tflint.hcl
-     echo "    enabled = true"  >> .tflint.hcl
-     echo "    version = \"0.1.4\"" >> .tflint.hcl
-     echo "    source = \"github.com/trilogy-group/tflint-ruleset-template\" " >> .tflint.hcl
-     echo "}" >> .tflint.hcl
-     tflint --init
-
-  - init: go build
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
