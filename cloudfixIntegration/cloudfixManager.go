@@ -1,8 +1,11 @@
-package main
+package cloudfixIntegration
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -38,10 +41,55 @@ type ResponseReccos struct {
 	LastUpdatedDate        string
 }
 
+type ErrorCodes int
+
+const (
+	GENERIC_ERROR     ErrorCodes = iota //all other cases
+	CRED_ERROR                          //Could not find Creds
+	STORAGE_ERROR                       //Could not store the token
+	UNAUTHCREDS_ERROR                   //Creds found, but server said Incorrect Creds
+)
+
 type CloudfixManager struct {
+	//no data fields required
+}
+
+type customError struct {
+	StatusCode ErrorCodes
+	Message    string
+}
+
+func (e *customError) Error() string {
+	return e.Message
 }
 
 //Member functions follow:
+
+func (c *CloudfixManager) getReccosFromCloudfix(token string) ([]byte, *customError) {
+	var reccos []byte
+	req, err := http.NewRequest("GET", RECOMMENDATIONS_ENDPOINT, nil)
+	if err != nil {
+		return reccos, &customError{GENERIC_ERROR, "Internal Error"}
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", token)
+
+	response, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return reccos, &customError{GENERIC_ERROR, "Internal Error"}
+	}
+	defer response.Body.Close()
+	statusCode := response.StatusCode
+	if statusCode != http.StatusOK {
+		return reccos, &customError{GENERIC_ERROR, "Failed to fetch reccomendations"}
+	}
+	reccos, errI := ioutil.ReadAll(response.Body)
+	if errI != nil {
+		return []byte{}, &customError{GENERIC_ERROR, "Internal Error"}
+	}
+	//fmt.Println(string(reccos))
+	return reccos, nil
+}
 
 func (c *CloudfixManager) createMap(reccos []byte, attrMapping []byte) map[string]map[string]string {
 	mapping := map[string]map[string]string{} //this is the map that has to be returned in the end
@@ -96,19 +144,38 @@ func (c *CloudfixManager) createMap(reccos []byte, attrMapping []byte) map[strin
 	return mapping
 }
 
-func (c *CloudfixManager) parseReccos() map[string]map[string]string {
+func (c *CloudfixManager) GetReccos() (map[string]map[string]string, *customError) {
 	//function to process the reccomendations from cloudfix and turn that into a map
 	//the structure of the map is resourceID -> Attribute type that needs to be targetted -> Ideal Attribute Value
 	// If there is no attribute that has to be targetted, attribute type would be filled with "NoAttributeMarker" and
 	//Attribute Value would be filled with any message that in the end has to be displayed to the user
-	currPWD, _ := exec.Command("pwd").Output()
-	currPWDStr := string(currPWD[:])
-	currPWDStrip := strings.Trim(currPWDStr, "\n")
-	currPWDStrip += "/reccos.json"
-	reccos, errR := ioutil.ReadFile(currPWDStrip)
-	if errR != nil {
-		Log.Error("Failed to read reccos json file")
-		panic(errR)
+
+	var cloudAuth CloudfixAuth
+	mapping := make(map[string]map[string]string)
+	var reccos []byte
+	_, present := os.LookupEnv("CLOUDFIX_FILE")
+	if present {
+		var errR error
+		currPWD, _ := exec.Command("pwd").Output()
+		currPWDStr := string(currPWD[:])
+		currPWDStrip := strings.Trim(currPWDStr, "\n")
+		currPWDStrip += "/reccos.json"
+		reccos, errR = ioutil.ReadFile(currPWDStrip)
+		if errR != nil {
+			//Add Error Log
+			return mapping, &customError{GENERIC_ERROR, "Could not read reccos from file"}
+		}
+	} else {
+		token, errA := cloudAuth.getToken()
+		if errA != nil && errA.StatusCode != STORAGE_ERROR {
+			return mapping, errA
+		}
+		var errT *customError
+		reccos, errT = c.getReccosFromCloudfix(token)
+		if errT != nil {
+			fmt.Println(errT.Message)
+			return mapping, errT
+		}
 	}
 	attrMapping := []byte(`{
 		"Gp2Gp3": {
@@ -128,7 +195,6 @@ func (c *CloudfixManager) parseReccos() map[string]map[string]string {
 			"Attribute Value": "Enable Intelligent Tiering for EFS File by declaring a sub-block called lifecycle_policy within this resource block"
 		}
 	}`)
-	mapping := c.createMap(reccos, attrMapping)
-	Log.Info("Recommendations Parsed successfully!")
-	return mapping
+	mapping = c.createMap(reccos, attrMapping)
+	return mapping, nil
 }

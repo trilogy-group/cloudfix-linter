@@ -52,7 +52,12 @@ func (t *TerraformManager) addPairToTagMap(resource *tfjson.StateResource, tagTo
 		Log.Warn("Tags not present")
 		return
 	}
-	tags := tagsRaw.(map[string]interface{})
+
+	tags, ok := tagsRaw.(map[string]interface{})
+	if !ok {
+		//log that tags are not present
+		return
+	}
 	yorTagRaw, ok := tags["yor_trace"]
 	if !ok {
 		Log.Warn("yor_trace is not present")
