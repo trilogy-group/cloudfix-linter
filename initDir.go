@@ -7,7 +7,7 @@ import (
 )
 
 func initDir(default_recco bool) error {
-	file, err := os.Create("cloudfix-linter-.tflint.hcl")
+	file, err := os.Create(".tflint.hcl")
 	if err != nil {
 		return err
 	}
