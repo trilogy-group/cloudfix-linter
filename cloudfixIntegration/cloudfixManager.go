@@ -183,7 +183,7 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 	}
 	if present && modeBoolval {
 		var errR error
-		dlog.Info("CLOUDFIX_FILE mode on. Reading from reccos.json")
+		dlog.Info("CLOUDFIX_FILE mode on. Reading from cloudfix-linter-reccos.json")
 		currPWDStrip := ""
 		currPWDStr := ""
 		currPWDStrip1 := ""
@@ -193,12 +193,12 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 			currPWDStrip = strings.Trim(currPWDStr, "\n")
 			currPWDStrip = strings.TrimSuffix(currPWDStrip, "\r")
 			currPWDStrip = strings.TrimSuffix(currPWDStrip, "cloudfix-linter")
-			currPWDStrip1 = currPWDStrip + "\\reccos.json"
+			currPWDStrip1 = currPWDStrip + "\\cloudfix-linter-reccos.json"
 		} else {
 			currPWD, _ := exec.Command("pwd").Output()
 			currPWDStr = string(currPWD[:])
 			currPWDStrip = strings.Trim(currPWDStr, "\n")
-			currPWDStrip1 = currPWDStrip + "/reccos.json"
+			currPWDStrip1 = currPWDStrip + "/cloudfix-linter-reccos.json"
 		}
 
 		reccos, errR = ioutil.ReadFile(currPWDStrip1)
