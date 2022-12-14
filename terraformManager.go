@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -20,7 +21,7 @@ func terraform() string {
 	if runtime.GOOS == "windows" {
 		ex, err := os.Executable()
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 		basePath := filepath.Dir(ex)
 		return basePath + "\\terraform.exe"

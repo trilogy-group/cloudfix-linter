@@ -65,7 +65,7 @@ func tflint() string {
 	if runtime.GOOS == "windows" {
 		ex, err := os.Executable()
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 		basePath := filepath.Dir(ex)
 		return basePath + "\\tflint.exe"
@@ -125,17 +125,20 @@ func (o *Orchestrator) runReccos(jsonFlag bool) {
 	}
 	errP := persist.store_reccos(reccosMapping, reccosFileName)
 	if errP != nil {
-		panic(errP)
+		fmt.Println("Error while storing recommendations")
+		return
 	}
 	os.Setenv("ReccosMapFile", reccosFileName)
 	tagFileName := "cloudfix-linter-tagsID.txt"
 	tagToIDMap, errG := terraMan.getTagToIDMapping()
 	if errG != nil {
-		panic(errG)
+		fmt.Println("Error while creating tag to ID mapping")
+		return
 	}
 	errT := persist.store_tagMap(tagToIDMap, tagFileName)
 	if errT != nil {
-		panic(errT)
+		fmt.Println("Error while storing tagMap")
+		return
 	}
 	os.Setenv("TagsMapFile", tagFileName)
 	modulesJson, _ := exec.Command(tflint(), "--only=module_source", "-f=json").Output()
