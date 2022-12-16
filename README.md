@@ -21,7 +21,7 @@ Invoke-WebRequest -URI https://github.com/trilogy-group/cloudfix-linter/releases
 ```
 - Linux
 ```bash
-read -sp "Enter sudo password: " pass  &&  wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash /dev/stdin $pass
+wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
  ```
  - Devspaces
 ```
