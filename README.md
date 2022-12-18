@@ -19,14 +19,11 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
 ```
 Invoke-WebRequest -URI https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.ps1 -OutFile install.ps1; ./install.ps1 (pwd).path
 ```
-- Linux
+- Linux and Devspaces
 ```bash
-read -sp "Enter sudo password: " pass  &&  wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash /dev/stdin $pass
- ```
- - Devspaces
-```
 wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
-```
+ ```
+
 
 #### 2. Ensure that terraform can access your AWS account. You can user one of the following:
 
@@ -84,7 +81,7 @@ Sample mapping json:
 		}
 }
 ```
-Detailed mapping can be viewed [here](https://github.com/trilogy-group/cloudfix-linter/blob/6ed0a514dc3dd8c865f81e2dcddda456d3012fca/cloudfixIntegration/cloudfixManager.go#L221).
+Detailed mapping can be viewed [here](https://github.com/trilogy-group/cloudfix-linter/blob/main/cloudfixIntegration/cloudfixManager.go).
 
 For each new oppurtunity type, create a new block in the json by its name. If the opportunity type targets an attribute in specific, put in the name of the attribute for the Attribute Type. If it does not target any attribute, put in "NoAttributeMarker" instead. For the Attribute Value, if that needs to picked up from the parameters field of the cloudfix recommendation, set that as parameters.{Name of field within parameters block} (for reference take a look at the block for Ec2IntelToAmd). In case the value for the attribute is static and need not be picked up from the parameters field, it can be hardcoded directly in the json (for reference take a look at the block for Gp2Gp3). If the oppurtunity type does not target any attribute in specific, for the attribute value, put in the message that you want displayed to the user (for reference see the block for EfsInfrequentAccess)
 

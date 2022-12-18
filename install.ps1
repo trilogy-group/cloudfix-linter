@@ -32,7 +32,7 @@ Write-Output "Terraform installed successfully"
 
 
 # Installing yor_trace 
-$YOR_VERSION="0.1.156"
+$YOR_VERSION="0.1.158"
 $FILE_PATH=$OUT_PATH+"yor_trace.zip"
 Write-Output "Installing yor_trace........"
 Invoke-WebRequest -URI https://github.com/bridgecrewio/yor/releases/download/${YOR_VERSION}/yor_${YOR_VERSION}_${PLATFORM}.zip -OutFile $FILE_PATH

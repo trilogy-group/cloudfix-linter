@@ -203,7 +203,7 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 
 		reccos, errR = ioutil.ReadFile(currPWDStrip1)
 		if errR != nil {
-			return mapping, &customError{GENERIC_ERROR, "Could not read reccos from file "}
+			return mapping, &customError{GENERIC_ERROR, "Could not read reccos from file " + currPWDStrip1}
 		}
 	} else {
 		dlog.Info("CLOUDFIX_FILE mode off. Calling CLoudFix")
@@ -216,6 +216,12 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 		reccos, errT = c.getReccosFromCloudfix(token)
 		if errT != nil {
 			return mapping, errT
+		}
+		var responses []ResponseReccos
+		if len(reccos) != 0 {
+			json.Unmarshal(reccos, &responses) //the reccomendations from cloudfix are being unmarshalled
+			file, _ := json.MarshalIndent(responses, "", " ")
+			_ = ioutil.WriteFile("CloudFixReccos.json", file, 0644)
 		}
 	}
 	attrMapping := []byte(`{
@@ -280,32 +286,36 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 			"Attribute Value": "Shrink AWS OpenSearch volumes"
 		},
 		"S3DDBTrafficToGWEndpoint": {
-			"Attribute Type": "NoAttributeMarker",
+			"Attribute Type": "GlobalAttributeMarker",
 			"Attribute Value": "S3/DynamoDB Traffic to Gateway Endpoint"
 		},
 		"DynamoDbProvisioning": {
-			"Attribute Type": "NoAttributeMarker",
-			"Attribute Value": "DynamoDB Use Provisioning and Autoscaling"
-		},
-		"Ec2LowRiskRightsize": {
-			"Attribute Type": "NoAttributeMarker",
-			"Attribute Value": "Ec2LowRiskRightsize"
+			"Attribute Type": "billing_mode",
+			"Attribute Value": "PROVISIONED"
 		},
 		"ArchiveOldEbsVolumeSnapshots": {
-			"Attribute Type": "NoAttributeMarker",
+			"Attribute Type": "GlobalAttributeMarker",
 			"Attribute Value": "Archive old EBS volume snapshots"
 		},
 		"DynamoDbInfrequentAccess": {
-			"Attribute Type": "NoAttributeMarker",
-			"Attribute Value": "DynamoDB Infrequent Access"
+			"Attribute Type": "billing_mode",
+			"Attribute Value": "PAY_PER_REQUEST"
 		},
 		"FixInstanceProfileForAgents": {
 			"Attribute Type": "NoAttributeMarker",
 			"Attribute Value": "FixInstanceProfileForAgents"
 		},
-		"Es79Graviton": {
+		"CloudFrontCompression": {
+			"Attribute Type": "ordered_cache_behavior.compress",
+			"Attribute Value": "true"
+		},
+		"ElbCleanUpIdle": {
 			"Attribute Type": "NoAttributeMarker",
-			"Attribute Value": "Elasticsearch to Graviton"
+			"Attribute Value": "Idle Elb, cleanup to save cost."
+		},
+		"EC2CleanupUnusedAMIs": {
+			"Attribute Type": "NoAttributeMarker",
+			"Attribute Value": "Cleanup unused AMIs"
 		}
 		}`)
 	mapping = c.createMap(reccos, attrMapping)

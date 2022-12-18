@@ -29,7 +29,7 @@ path+="/terraform"
 alias terraform=$path
 
 #Installing yor_trace 
-YOR_VERSION=0.1.150
+YOR_VERSION=0.1.158
 wget https://github.com/bridgecrewio/yor/releases/download/${YOR_VERSION}/yor_${YOR_VERSION}_${PLATFORM}.tar.gz \
 && tar -xvzf yor_${YOR_VERSION}_${PLATFORM}.tar.gz \
 && rm yor_${YOR_VERSION}_${PLATFORM}.tar.gz               
