@@ -217,12 +217,6 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 		if errT != nil {
 			return mapping, errT
 		}
-		var responses []ResponseReccos
-		if len(reccos) != 0 {
-			json.Unmarshal(reccos, &responses) //the reccomendations from cloudfix are being unmarshalled
-			file, _ := json.MarshalIndent(responses, "", " ")
-			_ = ioutil.WriteFile("CloudFixReccos.json", file, 0644)
-		}
 	}
 	attrMapping := []byte(`{
 		"Gp2Gp3": {
