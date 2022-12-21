@@ -193,12 +193,13 @@ func (c *CloudfixManager) GetReccos() (map[string]map[string][]string, *customEr
 			currPWDStrip = strings.Trim(currPWDStr, "\n")
 			currPWDStrip = strings.TrimSuffix(currPWDStrip, "\r")
 			currPWDStrip = strings.TrimSuffix(currPWDStrip, "cloudfix-linter")
-			currPWDStrip1 = currPWDStrip + "\\cloudfix-linter-reccos.json"
+			currPWDStrip1 = currPWDStrip + "\\reccos.json"
 		} else {
 			currPWD, _ := exec.Command("pwd").Output()
 			currPWDStr = string(currPWD[:])
 			currPWDStrip = strings.Trim(currPWDStr, "\n")
-			currPWDStrip1 = currPWDStrip + "/cloudfix-linter-reccos.json"
+			currPWDStrip = strings.TrimSuffix(currPWDStrip, "cloudfix-linter")
+			currPWDStrip1 = currPWDStrip + "/reccos.json"
 		}
 
 		reccos, errR = ioutil.ReadFile(currPWDStrip1)
