@@ -10,7 +10,7 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
 
 ## Pre-requisites to use the product
 
-1. An active cloudfix account at https://preview.app.cloudfix.com/
+1. An active cloudfix account at https://app.cloudfix.com/
 2. Resources deployed on AWS using terraform for which you would like to see reccomendations.
 
 ## Usage guide
@@ -24,7 +24,7 @@ wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/downl
     b) Set the access key and the secret key inside of the provider "aws" block eg: in the main.tf file provider "aws" { region = "us-east-1" access_key = "my-access-key" secret_key = "my-secret-key" } 
     c) Set and export AWS_ACCESS_KEY_ID , AWS_SECRET_ACCESS_KEY , AWS_SESSION_TOKEN as enviroment variables. More information on how to give access can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 
-3) This version works with CloudFix v3 so make sure you have credentials to https://preview.app.cloudfix.com/
+3) This version works with CloudFix v3 so make sure you have credentials to https://app.cloudfix.com/
 
 4). From your terraform code working directory do "cloudfix-linter init".
 ```bash
