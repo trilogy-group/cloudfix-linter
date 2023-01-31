@@ -46,7 +46,7 @@ chmod +x terraform
 YOR_VERSION=0.1.150
 file_name=yor_\${YOR_VERSION}_\${PLATFORM}.tar.gz
 wget https://github.com/bridgecrewio/yor/releases/download/\${YOR_VERSION}/\${file_name} -O \${file_name} --no-check-certificate \
-&& tar --overwrite -xvzf \${file_name} \
+&& tar -xvzf \${file_name} \
 && rm \${file_name}               
 path=\$(pwd)
 path+="/yor"
