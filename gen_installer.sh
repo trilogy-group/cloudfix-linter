@@ -32,51 +32,58 @@ mkdir -p cloudfix-linter
 cd cloudfix-linter
 
 #Installing terraform 
+echo "Installing Terraform"
 TERRAFORM_VERSION=1.2.6
 file_name=terraform_\${TERRAFORM_VERSION}_\${PLATFORM}.zip
-( wget https://releases.hashicorp.com/terraform/\${TERRAFORM_VERSION}/\${file_name} -O \${file_name} --no-check-certificate \
-  && unzip -u \${file_name} \
+( wget https://releases.hashicorp.com/terraform/\${TERRAFORM_VERSION}/\${file_name} -O \${file_name} --no-check-certificate \\
+  && unzip -u \${file_name} \\
   && rm \${file_name})
 path=\$(pwd)
 path+="/terraform"
 alias terraform=\$path
 chmod +x terraform
+echo "Terraform installed successfully"
 
-#Installing yor_trace 
+#Installing yor
+echo "Installing Yor"
 YOR_VERSION=0.1.150
 file_name=yor_\${YOR_VERSION}_\${PLATFORM}.tar.gz
-wget https://github.com/bridgecrewio/yor/releases/download/\${YOR_VERSION}/\${file_name} -O \${file_name} --no-check-certificate \
-&& tar -xvzf \${file_name} \
-&& rm \${file_name}               
+wget https://github.com/bridgecrewio/yor/releases/download/\${YOR_VERSION}/\${file_name} -O \${file_name} --no-check-certificate \\
+&& tar -xvzf \${file_name} \\
+  && rm \${file_name}               
 path=\$(pwd)
 path+="/yor"
 alias yor=\$path
 chmod +x yor
+echo "Yor installed successfully"
 
 #Installing tflint 
-# higher version have breaking changes to the plugin system and hence we can't install them without changing the plugin
-export TFLINT_VERSION=v0.39.3
+# plugin updated for compatibility with tflint v0.44.1
+echo "Installing Tflint"
+export TFLINT_VERSION=v0.44.1
 file_name=tflint_\${PLATFORM}.zip
-(wget https://github.com/terraform-linters/tflint/releases/download/\${TFLINT_VERSION}/\${file_name} -O \${file_name} --no-check-certificate  \
-  && unzip -u \${file_name} \
+(wget https://github.com/terraform-linters/tflint/releases/download/\${TFLINT_VERSION}/\${file_name} -O \${file_name} --no-check-certificate  \\
+  && unzip -u \${file_name} \\
   && rm \${file_name})
 # Setting alias for tflint so that it can be used via command line without referencing the binary path
 path=\$(pwd)
 path+="/tflint"
 alias tflint=\$path
 chmod +x tflint
+echo "Tflint installed successfully"
 
 VERSION_TAG=$(git describe --tags --abbrev=0)
 # Install cloudfix-linter
 echo "Installing cloudfix-linter"
 file_name=cloudfix-linter-developer_\${PLATFORM}
-(wget https://github.com/Cloudfix-linter-Cloudformation-Release/releases/download/\${VERSION_TAG}/\${file_name} -O \${file_name} --no-check-certificate \
+(wget https://github.com/trilogy-group/cloudfix-linter/releases/download/\${VERSION_TAG}/\${file_name} -O \${file_name} --no-check-certificate \\
   && mv \${file_name} cloudfix-linter)
 # Setting alias for cloudfix-linter so that it can be used via command line without referencing the binary path
 path=\$(pwd)
 path+="/cloudfix-linter"
 alias cloudfix-linter=\$path
 chmod +x cloudfix-linter
+echo "Cloudfix-linter installed successfully"
 EOF1
 
 cat >install.ps1 <<EOF2
