@@ -98,26 +98,60 @@ if(\$is64Bit){
     \$PLATFORM="windows_386"
 }
 
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+function Unzip
+{
+    param([string]\$zipfile, [string]\$outpath)
+
+    [System.IO.Compression.ZipFile]::ExtractToDirectory(\$zipfile, \$outpath)
+}
 
 \$OUT_PATH= \$(Get-Item .).FullName+"\cloudfix-linter\"
-if (-Not (Get-Item \$OUT_PATH)) { New-Item -Path \$OUT_PATH -ItemType Directory }
+if (-Not (Get-Item \$OUT_PATH)) { New-Item -Path \$OUT_PATH -ItemType Directory }\
 
-\$VERSION_TAG=$(git describe --tags --abbrev=0)
+# Installing Terraform
+\$TERRAFORM_VERSION="1.2.6"
+\$FILE_PATH=\$OUT_PATH+"terraform.zip"
+Write-Output "Installing terraform........"
+Invoke-WebRequest -URI https://releases.hashicorp.com/terraform/\${TERRAFORM_VERSION}/terraform_\${TERRAFORM_VERSION}_\${PLATFORM}.zip -OutFile \$FILE_PATH
+Expand-Archive -Path \$FILE_PATH -DestinationPath \$OUT_PATH -Force
+Remove-Item \$FILE_PATH
+\$TEMP=\$OUT_PATH+"terraform.exe"
+Set-Alias -Name terraform -Value \$TEMP -Scope Global
+Write-Output "Terraform installed successfully"
+
+
+# Installing yor
+\$YOR_VERSION="0.1.158"
+\$FILE_PATH=\$OUT_PATH+"yor_trace.zip"
+Write-Output "Installing yor_trace........"
+Invoke-WebRequest -URI https://github.com/bridgecrewio/yor/releases/download/\${YOR_VERSION}/yor_\${YOR_VERSION}_\${PLATFORM}.zip -OutFile \$FILE_PATH
+Expand-Archive -Path \$FILE_PATH -DestinationPath \$OUT_PATH -Force
+Remove-Item \$FILE_PATH
+\$TEMP=\$OUT_PATH+"yor.exe"
+Set-Alias -Name yor -Value \$TEMP -Scope Global
+Write-Output "Yor installed successfully"
+
+#Installing tflint
+# plugin updated for compatibility with tflint v0.44.1
+\$TFLINT_VERSION="v0.44.1"
+\$FILE_PATH=Get-Location
+\$FILE_PATH=\$OUT_PATH+"tflint.zip"
+Write-Output "Installing tflint........"
+Invoke-WebRequest -URI https://github.com/terraform-linters/tflint/releases/download/\${TFLINT_VERSION}/tflint_\${PLATFORM}.zip -OutFile \$FILE_PATH
+Expand-Archive -Path \$FILE_PATH -DestinationPath \$OUT_PATH -Force
+Remove-Item \$FILE_PATH
+\$TEMP=\$OUT_PATH+"tflint.exe"
+Set-Alias -Name tflint -Value \$TEMP -Scope Global
+Write-Output "Tflint installed successfully"
+
 # Install cloudfix-linter
-Write-Output "Installing cloudfix-linter-cloudformation........"
-\$OUT_PATH_CFT=\$OUT_PATH+"cloudfix-linter-cloudformation.exe"
-\$DOWNLOAD_ADDRESS="https://github.com/trilogy-group/Cloudfix-linter-Cloudformation-Release/releases/download/"+\$VERSION_TAG
-Invoke-WebRequest -URI \${DOWNLOAD_ADDRESS}/cloudfix-linter-cloudformation_\${PLATFORM}.exe -OutFile \$OUT_PATH_CFT
-\$TEMP=\$OUT_PATH+"cloudfix-linter-cloudformation.exe"
-Set-Alias -Name cloudfix-linter-cloudformation -Value \$TEMP -Scope Global
+\$VERSION_TAG=$(git describe --tags --abbrev=0)
+Write-Output "Installing cloudfix-linter........"
+\$OUT_PATH_CFT=\$OUT_PATH+"cloudfix-linter.exe"
+\$DOWNLOAD_ADDRESS="https://github.com/trilogy-group/cloudfix-linter/releases/download/"+\$VERSION_TAG
+Invoke-WebRequest -URI \${DOWNLOAD_ADDRESS}/cloudfix-linter-developer_\${PLATFORM}.exe -OutFile \$OUT_PATH_CFT
+\$TEMP=\$OUT_PATH+"cloudfix-linter.exe"
+Set-Alias -Name cloudfix-linter -Value \$TEMP -Scope Global
 Write-Output "Cloudfix-linter installed successfully"
-
-
-Write-Output "Installing cloudfix-linter-cloudformation........"
-\$OUT_PATH_CFT=\$OUT_PATH+"mynewrule.py"
-Invoke-WebRequest -URI \${DOWNLOAD_ADDRESS}/mynewrule.py -OutFile \$OUT_PATH_CFT
-
-
-# Installing CFN-Lint
-pip install cfn-lint
 EOF2
