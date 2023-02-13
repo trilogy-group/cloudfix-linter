@@ -1,0 +1,9 @@
+cloudfix-linter
+dist
+reccos.json
+recos.txt
+coverage.out
+mappingFile.json
+tagsID.txt
+.vscode
+.tflint.hcl
