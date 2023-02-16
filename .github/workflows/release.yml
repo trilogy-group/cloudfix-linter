@@ -39,7 +39,7 @@ jobs:
         run: cd main && git fetch --force --tags
       - name: Generate install scripts
         # gen_installer.sh is ran from public repo folder because it uses tags
-        run: cd main && ../gen_installer.sh && mv install.sh ../ && mv install.ps1 ../
+        run: cd main && ../gen_installer.sh && mv install.sh ../ && mv install.ps1 ../ && mv cfn/mynewrule.py ../
       - name: Release install.sh and install.ps1
         uses: softprops/action-gh-release@v1        
         with:
@@ -47,6 +47,7 @@ jobs:
           files: |
             install.sh
             install.ps1
+            mynewrule.py
       -
         name: Set up Go
         uses: actions/setup-go@v2
