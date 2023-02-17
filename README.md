@@ -23,7 +23,7 @@ It is a command line tool that flags optimisation opportunities detected by Clou
 
 
 ## Usage guide
-1) Run command 
+1). Run command 
 ```bash
 wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
  ```
@@ -33,7 +33,7 @@ wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/downl
     b) Set the access key and the secret key inside of the provider "aws" block eg: in the main.tf file provider "aws" { region = "us-east-1" access_key = "my-access-key" secret_key = "my-secret-key" } 
     c) Set and export AWS_ACCESS_KEY_ID , AWS_SECRET_ACCESS_KEY , AWS_SESSION_TOKEN as enviroment variables. More information on how to give access can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 
-3) This version works with CloudFix v3 so make sure you have credentials to https://app.cloudfix.com/
+3). This version works with CloudFix v3 so make sure you have credentials to https://app.cloudfix.com/
 
 4). From your terraform code working directory do "cloudfix-linter init".
 ```bash
@@ -56,9 +56,10 @@ Note:- If you do not have terraform code template to test this tool. You can use
 
 ## Guide on how to add support for new Cloudfix Oppurtunity Types:
 
-New cloudfix Opportunity can be added to CLI's in case of terraform and cloudformation only.    
+***New cloudfix Opportunity can be added to CLI's in case of terraform and cloudformation only.***     
+
 A pure json mapping has been made so that support for new insights can be added easily.
-Sample mapping json:
+Sample mapping json used incase of Terraform:
 
 ```
 {
@@ -83,8 +84,8 @@ Sample mapping json:
 
 For each new oppurtunity type, create a new block in the json by its name. If the opportunity type targets an attribute in specific, put in the name of the attribute for the Attribute Type. If it does not target any attribute, put in "NoAttributeMarker" instead. For the Attribute Value, if that needs to picked up from the parameters field of the cloudfix recommendation, set that as parameters.{Name of field within parameters block} (for reference take a look at the block for Ec2IntelToAmd). In case the value for the attribute is static and need not be picked up from the parameters field, it can be hardcoded directly in the json (for reference take a look at the block for Gp2Gp3). If the oppurtunity type does not target any attribute in specific, for the attribute value, put in the message that you want displayed to the user (for reference see the block for EfsInfrequentAccess)
 
-This mapping is currently part of the code itself, So change must be done in code. These mapping could be hosted later on for public access. 
-
+This mapping is currently part of the code itself, So change must be done in code. These mapping could be hosted later on for public access.    
+ ***Above mapping is for terraform only mapping is different in case of cloudformation***
 
 ## Contributing
 
