@@ -2,16 +2,25 @@
 
 ## Who is the product for
 
-The product is for anyone who uses terraform to manage their AWS infrastructure and would like to know how best they can optimise their cloud infrastucture in order to save costs.
+The product is for anyone who uses Iac(Terraform, Cloudformation, CDK) to manage their AWS infrastructure and would like to know how best they can optimise their cloud infrastucture in order to save costs.
 
-## What is the product
+## What is the product ?
 
-It is a command line tool that flags optimisation oppurtunities detected by Cloudfix for the resources that have been deployed using terraform. It'll either flag the specific attribute within the resource that needs to be changed (along with what it needs to be changed to), or in the case that such an attribute does not exist, describe the oppurtunity against the name of the resource about which the oppurtunity is present. 
+It is a command line tool that flags optimisation oppurtunities detected by Cloudfix for the resources that have been deployed using Iac. 
+1. For Terraform and Cloudformatino - it'll either flag the specific attribute within the resource that needs to be changed (along with what it needs to be changed to), or in the case that such an attribute does not exist, describe the oppurtunity against the name of the resource about which the oppurtunity is present. 
 
-## Pre-requisites to use the product
+2. For CDK - It will prepare a report which can be viewed in the VSCode. Report will be created for the account CDK code is deployed in. It will have all the resources created by the CDK code along with the recommendations for those resources.
 
-1. An active cloudfix account at https://app.cloudfix.com/
-2. Resources deployed on AWS using terraform for which you would like to see reccomendations.
+
+## Pre-requisites to use the product.  
+ 1. An active cloudfix account at https://app.cloudfix.com/ 
+ 2. An AWS account logged in to deploy resources via IaC
+
+## Usage guides - 
+1). [TERRAFORM]()    
+2). [CLOUDFORMATION]()   
+3). [CDK]()     
+
 
 ## Usage guide
 1) Run command 
