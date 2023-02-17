@@ -6,7 +6,7 @@ The product is for anyone who uses Iac(Terraform, Cloudformation, CDK) to manage
 
 ## What is the product ?
 
-It is a command line tool that flags optimisation oppurtunities detected by Cloudfix for the resources that have been deployed using Iac. 
+It is a command line tool that flags optimisation opportunities detected by Cloudfix for the resources that have been deployed using Iac. 
 1. For Terraform and Cloudformatino - it'll either flag the specific attribute within the resource that needs to be changed (along with what it needs to be changed to), or in the case that such an attribute does not exist, describe the oppurtunity against the name of the resource about which the oppurtunity is present. 
 
 2. For CDK - It will prepare a report which can be viewed in the VSCode. Report will be created for the account CDK code is deployed in. It will have all the resources created by the CDK code along with the recommendations for those resources.
