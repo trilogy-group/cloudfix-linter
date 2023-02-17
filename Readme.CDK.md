@@ -1,14 +1,15 @@
 # Cloudfix-linter CDK
 
+
 ## Additional Pre-requisites for CDK
 1). Resources deployed on AWS using CDK for which you would like to see reccomendations.    
-2). AWS cli installed on the users machine.    
+2). AWS cli installed on the users machine.
 3). Ensure that our tool can access your AWS account. You can use one of the following options:
     a) Devconnect with [saml2aws](https://github.com/Versent/saml2aws) and mention the profile name in config file.   
     b) If the enviroment is configured in your CDK code, log into the account mentioned in environment for CDK code via aws-cli. 
     
     **Note**: Seting and exporting `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` as enviroment variables is 'not supported'.
-
+4). You must deploy cdk from your CDK project directory, with cdk.json at root level of cdk project.   
 ## Using the VS Code [Cloudfix-linter extension](https://open-vsx.trilogy.devspaces.com/extension/devfactory/cloudfix-linter)
 
 1. Deploy your cdk stacks with `--ouptut .cdkout` added at last of cdk deploy command. This creates a .cdkout directory with cdk deploy outputs(manifest.json,tree.json and stack templates etc.)
@@ -42,8 +43,9 @@
     ```
     If non profile is mentioned cli will fetch recommendations for default aws-profile
 
-6. You will get the recommendation in STDOUT
+6. You will get the recommendation/report in STDOUT
 
+### NOTE - There is no json mode for CDK currently
 
 ### Building and publising
 
