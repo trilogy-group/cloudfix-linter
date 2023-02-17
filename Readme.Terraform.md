@@ -43,5 +43,15 @@ Note:- If you do not have terraform code template to test this tool. You can use
 Resources having recommendations will be linted in your terraform files.
 
 
+## Contributing
+
+The project uses a custom ruleset written for [TfLint](https://github.com/terraform-linters/tflint/blob/master/docs/developer-guide/architecture.md) to flag reccomendations from cloudfix. The github repo for the ruleset can be accessed [here] (https://github.com/trilogy-group/tflint-ruleset-template)
+
+### Local debugging
+```bash
+TODO The commands
+```
+
+
 
 
