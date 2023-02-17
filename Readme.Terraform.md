@@ -31,7 +31,7 @@ Note :- If you make any changes to your terraform code, You first have to deploy
 Note:- If you do not have terraform code template to test this tool. You can use [this](https://github.com/trilogy-group/cloudfixLinter-demo) demo
 
 
-### Usage with [Cloudfix-linter Extension](https://open-vsx.trilogy.devspaces.com/extension/devfactory/cloudfix-linter) 
+## Usage with [Cloudfix-linter Extension](https://open-vsx.trilogy.devspaces.com/extension/devfactory/cloudfix-linter) 
 
 1). Ensure that terraform can access your AWS account, as mentioned [here](https://github.com/trilogy-group/cloudfix-linter/blob/ReadmeUpdate/Readme.Terraform.md#:~:text=2\).%20Ensure%20that,be%20found%20here)
 
