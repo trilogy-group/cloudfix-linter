@@ -14,36 +14,49 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
 2. Resources deployed on AWS using terraform for which you would like to see reccomendations.
 
 ## Usage guide
-1) Run command 
-```bash
-wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
- ```
+1. Run command 
+	```bash
+	wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
+	```
 
-2). Ensure that terraform can access your AWS account. You can user one of the following
-    a) Devconnect with [saml2aws](https://github.com/Versent/saml2aws)
-    b) Set the access key and the secret key inside of the provider "aws" block eg: in the main.tf file provider "aws" { region = "us-east-1" access_key = "my-access-key" secret_key = "my-secret-key" } 
-    c) Set and export AWS_ACCESS_KEY_ID , AWS_SECRET_ACCESS_KEY , AWS_SESSION_TOKEN as enviroment variables. More information on how to give access can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+2. Ensure that terraform can access your AWS account. You can user one of the following
 
-3) This version works with CloudFix v3 so make sure you have credentials to https://app.cloudfix.com/
+    1. Devconnect with [saml2aws](https://github.com/Versent/saml2aws)
+    2. Set the access key and the secret key inside of the provider "aws" block eg: in the main.tf file provider "aws" { region = "us-east-1" access_key = "my-access-key" secret_key = "my-secret-key" } 
+    3. Set and export AWS_ACCESS_KEY_ID , AWS_SECRET_ACCESS_KEY , AWS_SESSION_TOKEN as enviroment variables. More information on how to give access can be found [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 
-4). From your terraform code working directory do "cloudfix-linter init".
-```bash
-cd my-terraform-project
-cloudfix-linter init
-cloudfix-linter --help
-```
+3. This version works with CloudFix v3 so make sure you have credentials to https://app.cloudfix.com/
 
-5). Run "terraform apply" to deploy the resources from your terraform code working directory.
-```bash
-terraform apply
-```
+4. From your terraform code working directory do "cloudfix-linter init".
+	```bash
+	cd my-terraform-project
+	cloudfix-linter init
+	cloudfix-linter --help
+	```
 
-6). To get recommendations from cloudfix and see them through CLI run command "cloudfix-linter flagRecco" 
+5. Run "terraform apply" to deploy the resources from your terraform code working directory.
+	```bash
+	terraform apply
+	```
 
-Note :- If you make any changes to your terraform code, You first have to deploy them using “terraform apply” and then run “cloudfix-linter” command again through working directory of your terraform code to see reccomendations being flagged according to recent changes. 
+6. To get recommendations from cloudfix and see them through CLI run command "cloudfix-linter flagRecco" 
+
+Note :- If you make any changes to your terraform code, You first have to deploy them using `terraform apply` and then run “cloudfix-linter” command again through working directory of your terraform code to see reccomendations being flagged according to recent changes. 
 
 Note:- If you do not have terraform code template to test this tool. You can use [this](https://github.com/trilogy-group/cloudfixLinter-demo) demo
 
+## FAQ
+
+### Terraform incompatibility issue
+
+- Currently he CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version.
+- For troubleshooting (this is a temporary workaround), trying running `terraform init` and `terraform apply` commands using the terraform binary present in the cloudfix-linter folder.
+- If your current working directory is the project root then run the follow commands (this replaces step #5 from the [Usage guide](./README.md#usage-guide)):
+	```bash
+	cloudfix-linter/terraform init
+	cloudfix-linter/terraform apply
+	```
+- Now follow as mentioned in the usage section
 
 ## Guide on how to add support for new Cloudfix Oppurtunity Types:
 
