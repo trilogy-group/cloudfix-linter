@@ -34,9 +34,10 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
 	cloudfix-linter --help
 	```
 
-5. Run "terraform apply" to deploy the resources from your terraform code working directory.
+5. Run "terraform apply" to deploy the resources from your terraform code working directory. Currently he CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version. To avoid conflicts with your local terraform version we recommend using the bundled terraform. If your current working directory is the project root then run the follow commands to use the bundled terraform
 	```bash
-	terraform apply
+	cloudfix-linter/terraform init
+	cloudfix-linter/terraform apply
 	```
 
 6. To get recommendations from cloudfix and see them through CLI run command "cloudfix-linter flagRecco" 
@@ -44,19 +45,6 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
 Note :- If you make any changes to your terraform code, You first have to deploy them using `terraform apply` and then run “cloudfix-linter” command again through working directory of your terraform code to see reccomendations being flagged according to recent changes. 
 
 Note:- If you do not have terraform code template to test this tool. You can use [this](https://github.com/trilogy-group/cloudfixLinter-demo) demo
-
-## FAQ
-
-### Terraform incompatibility issue
-
-- Currently he CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version.
-- For troubleshooting (this is a temporary workaround), trying running `terraform init` and `terraform apply` commands using the terraform binary present in the cloudfix-linter folder.
-- If your current working directory is the project root then run the follow commands (this replaces step #5 from the [Usage guide](./README.md#usage-guide)):
-	```bash
-	cloudfix-linter/terraform init
-	cloudfix-linter/terraform apply
-	```
-- Now follow as mentioned in the usage section
 
 ## Guide on how to add support for new Cloudfix Oppurtunity Types:
 
