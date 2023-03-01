@@ -34,7 +34,7 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
 	cloudfix-linter --help
 	```
 
-5. Run "terraform apply" to deploy the resources from your terraform code working directory. Currently he CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version. To avoid conflicts with your local terraform version we recommend using the bundled terraform. If your current working directory is the project root then run the follow commands to use the bundled terraform
+5. Run "terraform apply" to deploy the resources from your terraform code working directory. Currently he CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version. To avoid conflicts with your local terraform version we recommend using the bundled terraform. If your current working directory is the project root then run the follow commands to use the bundled terraform. [Video demo](https://www.loom.com/share/f27c295e251b452696516055b65323f1)
 	```bash
 	cloudfix-linter/terraform init
 	cloudfix-linter/terraform apply
