@@ -20,7 +20,7 @@ It is a command line tool that flags optimisation opportunities detected by Clou
  2. An AWS account logged in to deploy resources via IaC
 
 ## Usage guides - 
-- [TERRAFORM](./Docs/TERRAFORM.md)    
+- [TERRAFORM](./Docs/v3TERRAFORM.md)    
 - [CLOUDFORMATION](./Docs/CLOUDFORMATION.md)   
 - [CDK](./Docs/CDK.md)     
 
