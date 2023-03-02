@@ -1,9 +1,6 @@
 # cloudfix-linter
 
 ## Who is the product for
-# cloudfix-linter
-
-## Who is the product for
 
 The product is for anyone who uses Iac(Terraform, Cloudformation, CDK) to manage their AWS infrastructure and would like to know how best they can optimise their cloud infrastucture in order to save costs.
 
