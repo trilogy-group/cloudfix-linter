@@ -50,6 +50,10 @@ Use "cloudfix-linter tf [command] --help" for more information about a command.
     ```
     cloudfix-linter/cloudfix-linter tf reco
     ```
+    For json output
+    ```
+    cloudfix-linter/cloudfix-linter tf reco -j
+    ```
 
 Note :- If you make any changes to your terraform code, You first have to deploy them using `cloudfix-linter/terraform apply` and then run `cloudfix-linter tf reco` command again through working directory of your terraform code to see reccomendations being flagged according to the recent changes. 
 

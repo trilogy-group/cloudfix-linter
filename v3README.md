@@ -19,7 +19,20 @@ It is a command line tool that flags optimisation opportunities detected by Clou
  1. An active cloudfix account at https://app.cloudfix.com/ 
  2. An AWS account logged in to deploy resources via IaC
 
-## Usage guides - 
+## Usage guides
+For CLI, set the cloudfix username and password as environment variables
+- For Windows
+  ```
+  $env:CLOUDFIX_USERNAME="<MY_USERNAME>"
+  $env:CLOUDFIX_PASSWORD="<PASSWORD>"
+  ```
+- For Linux and Mac
+  ```
+  export CLOUDFIX_FILE=false
+    export CLOUDFIX_USERNAME="<MY_USERNAME>"
+    export CLOUDFIX_PASSWORD="<PASSWORD>"
+  ```
+Platforms
 - [TERRAFORM](./Docs/TERRAFORM.md)    
 - [CLOUDFORMATION](./Docs/CLOUDFORMATION.md)   
 - [CDK](./Docs/CDK.md)     
