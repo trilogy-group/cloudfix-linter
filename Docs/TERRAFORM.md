@@ -25,7 +25,7 @@ Use "cloudfix-linter tf [command] --help" for more information about a command.
 	wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
 	```
 
-2. Ensure that terraform can access your AWS account. You can user one of the following
+2. Ensure that terraform can access your AWS account. You can use one of the following
 
     1. Devconnect with [saml2aws](https://github.com/Versent/saml2aws)
     2. Set the access key and the secret key inside of the provider "aws" block eg: in the main.tf file provider "aws" { region = "us-east-1" access_key = "my-access-key" secret_key = "my-secret-key" } 
@@ -35,10 +35,10 @@ Use "cloudfix-linter tf [command] --help" for more information about a command.
 
 4. Open the folder with your terraform files as the rootfolder.    
             
-   Wrong setup :The rootfolder does not contain the terrafrom files, instead terraform-dev-setup/s3 has the terraform files, extension does not supports such file heirarchy.    
+   Wrong setup : The rootfolder does not contain the terrafrom files, instead subfolder terraform-dev-setup/s3 has the terraform files, extension does not supports such file heirarchy.    
    <img width="700" alt="image" src="https://user-images.githubusercontent.com/110278052/222429097-b9788278-1ac1-41ae-96c7-f803e57a9643.png">
 
-   Correct Setup :The rootfolder S3-Buckets has the terraform files directly under it.     
+   Correct Setup : The rootfolder s3-buckets has the terraform files directly under it.     
    <img width="690" alt="image" src="https://user-images.githubusercontent.com/110278052/222428861-0485684d-9f20-4270-b51f-7596cccccb04.png">
 
 
@@ -50,7 +50,7 @@ Use "cloudfix-linter tf [command] --help" for more information about a command.
 	```
 
 
-6. Run "terraform apply" to deploy the resources from your terraform code working directory. Currently the CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version. To avoid conflicts with your local terraform version we recommend using the bundled terraform. If your current working directory is the project root then run the follow commands to use the bundled terraform. [Video demo](https://www.loom.com/share/f27c295e251b452696516055b65323f1)
+6. Run "terraform apply" to deploy the resources from your terraform code working directory. Currently the CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version. To avoid conflicts with your local terraform version we recommend using the bundled terraform. If your current working directory is the project root directory then run the follow commands to use the bundled terraform. [Video demo](https://www.loom.com/share/f27c295e251b452696516055b65323f1)
 	```bash
 	cloudfix-linter/terraform init
 	cloudfix-linter/terraform apply
