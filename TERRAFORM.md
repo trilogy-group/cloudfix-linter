@@ -1,24 +1,26 @@
-# cloudfix-linter
+## Command summary
+Use the command `cloudfix-linter tf`
+```
+This tool brings Cloudfix recommendations for your terraform code, to your terminal
 
-## Who is the product for
+Usage:
+cloudfix-linter tf [flags]
+cloudfix-linter tf [command]
 
-The product is for anyone who uses terraform to manage their AWS infrastructure and would like to know how best they can optimise their cloud infrastucture in order to save costs.
+Available Commands:
+init        To initialise the directory. Run this before asking for recommendations
+addTags     Add tags to your terraform code to trace them back to the cloud
+reco        To flag recommendations
 
-## What is the product
+Flags:
+-h, --help   help for tf
 
-It is a command line tool that flags optimisation oppurtunities detected by Cloudfix for the resources that have been deployed using terraform. It'll either flag the specific attribute within the resource that needs to be changed (along with what it needs to be changed to), or in the case that such an attribute does not exist, describe the oppurtunity against the name of the resource about which the oppurtunity is present. 
-
-## Pre-requisites to use the product
-
-1. An active cloudfix account at https://app.cloudfix.com/
-2. Resources deployed on AWS using terraform for which you would like to see reccomendations.
-
+Use "cloudfix-linter tf [command] --help" for more information about a command.
+```
 ## Usage guide
-
-Note: For CLI version v3.0.0 and above refer to this [readme](./v3README.md)
 1. Run command 
 	```bash
-	wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/download/v2.0.3/install.sh | bash
+	wget -O - https://github.com/trilogy-group/cloudfix-linter/releases/latest/download/install.sh | bash
 	```
 
 2. Ensure that terraform can access your AWS account. You can user one of the following
@@ -32,8 +34,8 @@ Note: For CLI version v3.0.0 and above refer to this [readme](./v3README.md)
 4. From your terraform code working directory do "cloudfix-linter init".
 	```bash
 	cd my-terraform-project
-	cloudfix-linter init
-	cloudfix-linter --help
+	cloudfix-linter/cloudfix-linter tf init
+	cloudfix-linter/cloudfix-linter tf --help
 	```
 
 5. Run "terraform apply" to deploy the resources from your terraform code working directory. Currently he CLI uses terraform version 1.2.6 which it downloads itself, this maybe not be compatible with your terraform version. To avoid conflicts with your local terraform version we recommend using the bundled terraform. If your current working directory is the project root then run the follow commands to use the bundled terraform. [Video demo](https://www.loom.com/share/f27c295e251b452696516055b65323f1)
@@ -42,9 +44,12 @@ Note: For CLI version v3.0.0 and above refer to this [readme](./v3README.md)
 	cloudfix-linter/terraform apply
 	```
 
-6. To get recommendations from cloudfix and see them through CLI run command "cloudfix-linter flagRecco" 
+6. To get recommendations from cloudfix and see them through CLI run command 
+    ```
+    cloudfix-linter/cloudfix-linter tf reco
+    ```
 
-Note :- If you make any changes to your terraform code, You first have to deploy them using `terraform apply` and then run “cloudfix-linter” command again through working directory of your terraform code to see reccomendations being flagged according to recent changes. 
+Note :- If you make any changes to your terraform code, You first have to deploy them using `cloudfix-linter/terraform apply` and then run `cloudfix-linter tf reco` command again through working directory of your terraform code to see reccomendations being flagged according to the recent changes. 
 
 Note:- If you do not have terraform code template to test this tool. You can use [this](https://github.com/trilogy-group/cloudfixLinter-demo) demo
 
@@ -52,7 +57,3 @@ Note:- If you do not have terraform code template to test this tool. You can use
 ## Tflint
 
 The project uses a custom ruleset written for [TfLint](https://github.com/terraform-linters/tflint/blob/master/docs/developer-guide/architecture.md) to flag reccomendations from cloudfix. The github repo for the ruleset releases can be accessed [here] (https://github.com/trilogy-group/tflint-ruleset-template)
-
-## Building and publising
- 
- See the Github action file for details.
