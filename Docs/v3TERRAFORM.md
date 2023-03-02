@@ -31,13 +31,14 @@ Use "cloudfix-linter tf [command] --help" for more information about a command.
 
 3. This version works with CloudFix v3 so make sure you have credentials to https://app.cloudfix.com/
 
-4. Open the folder with your terraform files as the rootfolder. 
-   Eg - 
-   Wrong setup :The rootfolder does not contain the terrafrom files, instead terraform-dev-setup/s3 has the terraform files, extension does not supports such file heirarchy
-   image.png
+4. Open the folder with your terraform files as the rootfolder.    
+            
+   Wrong setup :The rootfolder does not contain the terrafrom files, instead terraform-dev-setup/s3 has the terraform files, extension does not supports such file heirarchy.    
+   <img width="700" alt="image" src="https://user-images.githubusercontent.com/110278052/222429097-b9788278-1ac1-41ae-96c7-f803e57a9643.png">
 
-   Correct Setup :The rootfolder S3-Buckets has the terraform files directly at his next level
-   image.png
+   Correct Setup :The rootfolder S3-Buckets has the terraform files directly under it.     
+   <img width="690" alt="image" src="https://user-images.githubusercontent.com/110278052/222428861-0485684d-9f20-4270-b51f-7596cccccb04.png">
+
 
 5. From your terraform code working directory do "cloudfix-linter init".
 	```bash
