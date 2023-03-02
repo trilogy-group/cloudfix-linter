@@ -1,5 +1,22 @@
 # Cloudfix-linter CDK
 
+## Command summary
+Use the command `cloudfix-linter tf`
+```
+This tool brings Cloudfix recommendations for your CDK project to your terminal
+
+Usage:
+  cloudfix-linter cdk [flags]
+  cloudfix-linter cdk [command]
+
+Available Commands:
+  reco        To create report with recommendations
+
+Flags:
+  -h, --help   help for cdk
+
+Use "cloudfix-linter cdk [command] --help" for more information about a command.
+```
 
 ## Additional Pre-requisites for CDK
 1. Resources deployed on AWS using CDK for which you would like to see reccomendations.    
