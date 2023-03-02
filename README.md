@@ -17,9 +17,9 @@ It is a command line tool that flags optimisation opportunities detected by Clou
  2. An AWS account logged in to deploy resources via IaC
 
 ## Usage guides - 
-1). [TERRAFORM](https://github.com/trilogy-group/cloudfix-linter/blob/ReadmeUpdate/Readme.Terraform.md)    
+1). [TERRAFORM](https://github.com/trilogy-group/cloudfix-linter/blob/ReadmeUpdate/Docs/Readme.Terraform.md)    
 2). [CLOUDFORMATION]()   
-3). [CDK](https://github.com/trilogy-group/cloudfix-linter/blob/ReadmeUpdate/Readme.CDK.md)     
+3). [CDK](https://github.com/trilogy-group/cloudfix-linter/blob/ReadmeUpdate/Docs/Readme.CDK.md)     
 
 
 ## Contributing
