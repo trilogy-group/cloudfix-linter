@@ -1,11 +1,10 @@
-
 name: goreleaser
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     tags:
-      - '*'
+      - "*"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -21,7 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checkout to private repo
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v3
         with:
           repository: trilogy-group/cloudfix-linter-developer
@@ -29,32 +28,38 @@ jobs:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           fetch-depth: 0
       - name: Checkout to public repo
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         uses: actions/checkout@v3
         with:
           path: main
           fetch-depth: 0
-      -
-        name: Fetch all tags
+
+      - name: Prepare bats testing
+        run: git submodule init && git submodule update
+
+      - name: CLI integration testing
+        run: make bats-test   
+
+      - name: Fetch all tags
         run: cd main && git fetch --force --tags
+
       - name: Generate install scripts
         # gen_installer.sh is ran from public repo folder because it uses tags
         run: cd main && ../gen_installer.sh && mv install.sh ../ && mv install.ps1 ../ && mv ../cfn/mynewrule.py ../
+        
       - name: Release install.sh and install.ps1
-        uses: softprops/action-gh-release@v1        
+        uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: false
           files: |
             install.sh
             install.ps1
             mynewrule.py
-      -
-        name: Set up Go
+      - name: Set up Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
-      -
-        name: Run GoReleaser
+      - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
@@ -62,7 +67,7 @@ jobs:
           version: latest
           args: release --rm-dist
           workdir: main
-          
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME: cloudfix-linter-developer
