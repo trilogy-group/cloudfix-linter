@@ -1,17 +1,28 @@
 # cloudfix-linter
 
 ## Who is the product for
+# cloudfix-linter
 
-The product is for anyone who uses terraform to manage their AWS infrastructure and would like to know how best they can optimise their cloud infrastucture in order to save costs.
+## Who is the product for
 
-## What is the product
+The product is for anyone who uses Iac(Terraform, Cloudformation, CDK) to manage their AWS infrastructure and would like to know how best they can optimise their cloud infrastucture in order to save costs.
 
-It is a command line tool that flags optimisation oppurtunities detected by Cloudfix for the resources that have been deployed using terraform. It'll either flag the specific attribute within the resource that needs to be changed (along with what it needs to be changed to), or in the case that such an attribute does not exist, describe the oppurtunity against the name of the resource about which the oppurtunity is present. 
+## What is the product ?
 
-## Pre-requisites to use the product
+It is a command line tool that flags optimisation opportunities detected by Cloudfix for the resources that have been deployed using Iac. 
+1. For Terraform and Cloudformation - it'll either flag the specific attribute within the resource that needs to be changed (along with what it needs to be changed to), or in the case that such an attribute does not exist, describe the oppurtunity against the name of the resource about which the oppurtunity is present. 
 
-1. An active cloudfix account at https://app.cloudfix.com/
-2. Resources deployed on AWS using terraform for which you would like to see reccomendations.
+2. For CDK - It will prepare a report in JSON format. Report will be created for the account CDK code is deployed in. It will have all the resources created by the CDK code along with the recommendations for those resources.
+
+
+## Pre-requisites to use the product.  
+ 1. An active cloudfix account at https://app.cloudfix.com/ 
+ 2. An AWS account logged in to deploy resources via IaC
+
+## Usage guides - 
+- [TERRAFORM](./Docs/TERRAFORM.md)    
+- [CLOUDFORMATION](./Docs/CLOUDFORMATION.md)   
+- [CDK](./Docs/CDK.md)     
 
 ## Commands summary
 - `cloudfix-linter`
@@ -36,7 +47,11 @@ It is a command line tool that flags optimisation oppurtunities detected by Clou
     Use "cloudfix-linter [command] --help" for more information about a command.
     ```
 
-## Usage guide
-- [Terraform](./TERRAFORM.md)
-- [Cloudformation](./CLOUDFORMATION.md)
-- [CDK](./CDK.md)
+## Contributing
+
+The project uses a custom ruleset written for [TfLint](https://github.com/terraform-linters/tflint/blob/master/docs/developer-guide/architecture.md) to flag reccomendations from cloudfix. The github repo for the ruleset releases can be accessed [here] (https://github.com/trilogy-group/tflint-ruleset-template)
+
+
+## Building and publising
+ 
+ See the Github action file for details.
