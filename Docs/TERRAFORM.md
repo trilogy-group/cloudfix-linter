@@ -1,3 +1,5 @@
+# Cloudfix-linter Terraform
+
 ## Command summary
 Use the command `cloudfix-linter tf`
 ```

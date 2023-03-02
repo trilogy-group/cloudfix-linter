@@ -1,7 +1,7 @@
 # Cloudfix-linter CDK
 
 ## Command summary
-Use the command `cloudfix-linter tf`
+Use the command `cloudfix-linter cdk`
 ```
 This tool brings Cloudfix recommendations for your CDK project to your terminal
 
