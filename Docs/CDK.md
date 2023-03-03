@@ -55,7 +55,7 @@ Use "cloudfix-linter cdk [command] --help" for more information about a command.
     ```
     - Note: After this step a folder .cdkout will be created with at the same level from where you ran your cdk deployment command.
  
-3. Run recco command to fetch recommendations from cloudfix.
+3. Run reco command to fetch recommendations from cloudfix.
     ```bash
     cloudfix-linter/cloudfix-linter cdk reco --aws-profile XYZ
     ```
