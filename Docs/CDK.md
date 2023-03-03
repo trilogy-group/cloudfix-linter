@@ -69,3 +69,7 @@ Use "cloudfix-linter cdk [command] --help" for more information about a command.
 4. CLI will fetch all the recommendations from cloudfix for the resources you deployed at step 1 and print it in console.
 
 5. User can enable a json mode to get the output of CLI in a json format.
+
+
+## Using CLI with [extension](https://open-vsx.trilogy.devspaces.com/extension/devfactory/cloudfix-linter)
+Not available currently.
