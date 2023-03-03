@@ -47,7 +47,7 @@ Use "cloudfix-linter cdk [command] --help" for more information about a command.
        
 
 2. Deploy your cdk stacks as you do and add `--output .cdkout` at end of cdk deploy command.   
-    - Note: If you have already deployed stack with `--output .cdkout` command to get recomendations before, you can skip this step to get report for the same resources as earlier
+    - Note: If you have already deployed stack with `--output .cdkout` command to get recommendations before, you can skip this step to get report for the same resources as earlier
 
     Sample command: 
     ```bash
