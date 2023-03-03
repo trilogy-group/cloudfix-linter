@@ -59,11 +59,12 @@ Use "cloudfix-linter cdk [command] --help" for more information about a command.
     ```bash
     cloudfix-linter/cloudfix-linter cdk reco --aws-profile XYZ
     ```
-    If no profile is mentioned the cli will fetch recommendations for the default AWS profile
     For only json output without user prompts
     ```
     cloudfix-linter/cloudfix-linter cdk reco -j --aws-profile XYZ
     ```
+    
+    - Note: If no profile is mentioned the cli will fetch recommendations for the default AWS profile
 
 4. CLI will fetch all the recommendations from cloudfix for the resources you deployed at step 1 and print it in console.
 
