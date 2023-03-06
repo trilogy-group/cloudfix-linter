@@ -1,5 +1,9 @@
 # Cloudfix-linter Cloudformation
 
+## Prerequisite
+
+1. [pip](https://pip.pypa.io/en/stable/installation/) should be installed on the user's system
+
 ## Command summary
 Use the command `cloudfix-linter cfn`
 ```
