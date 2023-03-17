@@ -73,6 +73,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME: cloudfix-linter-developer
-          CLI_VERSION: env.cli_version
+          CLI_VERSION: ${{ env.cli_version }}
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
