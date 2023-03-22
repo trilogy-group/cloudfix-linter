@@ -56,7 +56,7 @@ jobs:
             install.ps1
             mynewrule.py
       - name: Get release tag
-        run: cd main && echo "cli_version="$(git describe --tags --abbrev=0) >> $GITHUB_ENV
+        run: cd main && echo "cli_version="$(git tag --sort=committerdate | tail -1) >> $GITHUB_ENV
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
