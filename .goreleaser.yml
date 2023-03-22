@@ -13,6 +13,8 @@ builds:
       - windows_amd64
       - darwin_amd64
       - darwin_arm64
+    ldflags:
+      - -X 'github.com/trilogy-group/cloudfix-linter-developer/rootCmd.Version={{ .Env.CLI_VERSION }}'
 archives:
   - id: zip
     name_template: "{{ .Env.APP_NAME }}_{{ .Os }}_{{ .Arch }}"
